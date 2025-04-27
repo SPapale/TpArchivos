@@ -1,9 +1,3 @@
-Nombre marlon
-Apellido cebolla
-DNI 123
-Nombre steve 
-Apellido laje
-DNI 456
-Nombre tito
-Apellido vargallosa
-DNI 789
+tito vargallosa 111
+marlon vargallosa 222
+adrian werle 333

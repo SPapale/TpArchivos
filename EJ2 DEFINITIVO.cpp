@@ -5,6 +5,7 @@
 int main() {
     FILE *archivo;
     char nombre[30], apellido[30];
+    char apellidoBusc[30], nombBusc[30];
     int dni, op, dniBusc;
     bool seguir = true; 
      bool encontrado = false;
@@ -12,7 +13,7 @@ int main() {
     do {
         printf("\nIngrese una opcion: \n");
         printf("1. Ingresar datos\n");
-        printf("2. Buscar por DNI\n");
+        printf("2. Buscar por Nombre y Apellido\n");
         printf("3. Salir\n");
         scanf("%d", &op);
         getchar(); 
@@ -43,8 +44,10 @@ int main() {
                 break;
 
             case 2:
-                printf("Ingrese el DNI de la persona que quiere buscar: ");
-                scanf("%d", &dniBusc);
+            	printf("Ingrese el nombre que desea buscar: ");
+            	scanf("%s", nombBusc);
+            	printf("Ingrese el apellido que desea buscar: ");
+            	scanf("%s", apellidoBusc);
 
                 archivo = fopen("usuarios.txt", "r");
                 if (archivo == NULL) {
@@ -53,26 +56,22 @@ int main() {
                 }
 
                
-                while (fscanf(archivo, "%s %s %d", nombre, apellido, &dni) == 3) {
-                    if (dni == dniBusc) {
-                        printf("Nombre: %s\n", nombre);
-                        printf("Apellido: %s\n", apellido);
-                        printf("DNI: %d\n", dni);
-                        encontrado = true;
-                        break;
-                    }
+                while(fscanf(archivo, "%s %s %d", nombre, apellido, &dni) != EOF){
+                if(strcmp(apellido, apellidoBusc) == 0 && strcmp(nombre, nombBusc) == 0){
+                    printf("Nombre: %s\n", nombre);
+                    printf("Apellido: %s\n", apellido);
+                    printf("DNI: %d\n", dni);
                 }
+            }
 
                 fclose(archivo);
 
-                if (!encontrado) {
-                    printf("No se encontró el DNI ingresado.\n");
-                }
+               
                 break;
 
             case 3:
                 seguir = false;
-                printf("Saliendo del programa.\n");
+                printf("Saliendo del programa\n");
                 break;
 
             

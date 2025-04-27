@@ -32,7 +32,7 @@ main(){
 		
 		printf("Ingrese el DNI de la persona que quiere buscar \n");
 		scanf("%d", &dniBusc);
-		if(dniBusc == dni){
+		if(dni == dniBusc){
 			strcpy(nombBusc, nombre);
 			strcpy(apellidoBusc, apellido);
 			printf("El nombre es %s y el apellido es %s", nombBusc, apellidoBusc);

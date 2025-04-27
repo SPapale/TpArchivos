@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+bool validarDniRepetido(FILE *archivo, int dni) {
+    char nombre[30], apellido[30];
+    int dniTemp;
+    
+    
+    while (fscanf(archivo, "%s %s %d", nombre, apellido, &dniTemp) != EOF) {
+        if (dniTemp == dni) {
+            return true;  
+        }
+    }
+    return false;  
+}
+
+void guardarDatos(FILE *archivo, char *nombre, char *apellido, int dni) {
+    fprintf(archivo, "%s %s %d\n", nombre, apellido, dni);
+    printf("Datos guardados correctamente.\n");
+}
+
+void buscarPorNombreYApellido(FILE *archivo, char *nombBusc, char *apellidoBusc) {
+    char nombre[30], apellido[30];
+    int dni;
+    bool encontrado = false;
+
+    while (fscanf(archivo, "%s %s %d", nombre, apellido, &dni) != EOF) {
+        if (strcmp(apellido, apellidoBusc) == 0 && strcmp(nombre, nombBusc) == 0) {
+            printf("Nombre: %s\n", nombre);
+            printf("Apellido: %s\n", apellido);
+            printf("DNI: %d\n", dni);
+            encontrado = true;
+            break;
+        }
+    }
+    
+    if (!encontrado) {
+        printf("No se encontró al usuario.\n");
+    }
+}
+
+int main() {
+    FILE *archivo;
+    char nombre[30], apellido[30];
+    char nombBusc[30], apellidoBusc[30];
+    int dni, op;
+    bool seguir = true;
+
+    do {
+        printf("\nIngrese una opcion: \n");
+        printf("1. Ingresar datos\n");
+        printf("2. Buscar por Nombre y Apellido\n");
+        printf("3. Salir\n");
+        scanf("%d", &op);
+        getchar();  
+
+        switch(op) {
+            case 1:
+                archivo = fopen("usuarios.txt", "a+");
+                if (archivo == NULL) {
+                    printf("Error al abrir el archivo.\n");
+                    break;
+                }
+
+                printf("Ingrese el nombre: ");
+                fgets(nombre, sizeof(nombre), stdin);
+                nombre[strcspn(nombre, "\n")] = '\0';  
+
+                printf("Ingrese el Apellido: ");
+                fgets(apellido, sizeof(apellido), stdin);
+                apellido[strcspn(apellido, "\n")] = '\0'; 
+
+                printf("Ingrese el DNI: ");
+                scanf("%d", &dni);
+
+                
+                if (validarDniRepetido(archivo, dni)) {
+                    printf("El DNI ya existe.\n");
+                } else {
+                    
+                    guardarDatos(archivo, nombre, apellido, dni);
+                }
+
+                fclose(archivo);
+                break;
+
+            case 2:
+                printf("Ingrese el nombre que desea buscar: ");
+                scanf("%s", nombBusc);
+                printf("Ingrese el apellido que desea buscar: ");
+                scanf("%s", apellidoBusc);
+
+                archivo = fopen("usuarios.txt", "r");
+                if (archivo == NULL) {
+                    printf("Error al abrir el archivo.\n");
+                    break;
+                }
+
+                
+                buscarPorNombreYApellido(archivo, nombBusc, apellidoBusc);
+
+                fclose(archivo);
+                break;
+
+            case 3:
+                seguir = false;
+                printf("Saliendo del programa\n");
+                break;
+        }
+    } while (seguir);
+
+    return 0;
+}
